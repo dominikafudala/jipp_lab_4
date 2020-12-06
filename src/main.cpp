@@ -6,8 +6,8 @@ using namespace std;
 int main(){
 
     while(1){
-        cout<<"1 - stworz macierz kwadratowa(zaprezentowane metody set, cols, rows, print, add, store)"<<endl;
-        cout<<"2 - stworz macierz niekwadratowa(zaprezentowane metody get, subtract, multiply, print) "<<endl;
+        cout<<"1 - stworz macierz niekwadratowa(zaprezentowane metody set, cols, rows, print, add, store)"<<endl;
+        cout<<"2 - stworz macierz kwadratowa(zaprezentowane metody get, subtract, multiply, print) "<<endl;
         cout<<"3 - wczytaj macierz z pliku"<<endl;
         cout<<"4 - zakoncz program"<<endl;
 
@@ -39,7 +39,7 @@ int main(){
                 Matrix m_sum_wynik = macierz1.add(m2_sum);
                 cout<<"Wynik dodawania: "<<endl;
                 m_sum_wynik.print();
-                cout<<"Czy chcesz zapisać wynik do pliku? y/n"<<endl;
+                cout<<"Czy chcesz zapisac wynik do pliku? y/n"<<endl;
                 char inp;
                 cin>>inp;
                 if('y' == inp){
@@ -70,7 +70,7 @@ int main(){
                 }
             case 3: {
                 cout<<"Wczytanie macierzy z pliku msumfile z katalogu biezacego"<<endl;
-                Matrix zpliku("./msumfile");
+                Matrix zpliku("./msumfile"); 
                 zpliku.print();
                 break;
                 }

@@ -1,5 +1,37 @@
 #include <Matrix/matrix.hpp>
 
+/*exceptions*/
+class FileNotOpen : public exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Plik nie zostal otwarty";
+    }
+};
+
+class NoElement : public exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Nie ma takiego elementu";
+    }
+};
+
+class WrongSize : public exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Zly rozmiar macierzy";
+    }
+};
+
+class PrintException : public exception
+{
+    virtual const char *what() const throw()
+    {
+        return "Nie mozna wydrukowac";
+    }
+};
 
 /*konstruktor dla macierzy*/
 
@@ -27,7 +59,7 @@ Matrix::Matrix(int n){
 
 /*konstruktor dla macierzy z pliku*/
 
-Matrix::Matrix(string path){
+Matrix::Matrix(string path) noexcept(false){
     ifstream file;
     file.open(path);
     if(file.is_open()){
@@ -46,38 +78,79 @@ Matrix::Matrix(string path){
         }   
         
         file.close();
-    }else cout<<"Blad. Plik nie zostal otwarty"<<endl;
+    }else {
+        FileNotOpen filenotopen;
+        try
+        {
+            throw filenotopen;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        
+    }
 }
 
 /*drukowanie macierzy na ekran */
 
 void Matrix::print(){
-    cout<<"Wyswietlanie macierzy "<<row<<"x"<<columns<<endl;
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j < columns; j++){
-            cout<<matrix[i][j]<<"  ";
-        }
-        cout<<endl;
+    if(!matrix.empty()){
+        cout<<"Wyswietlanie macierzy "<<row<<"x"<<columns<<endl;
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < columns; j++){
+                cout<<matrix.at(i).at(j)<<"  ";
+            }
+            cout<<endl;
     }
+    }else
+    {
+        PrintException noprint;
+        try
+        {
+            throw noprint;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+    }
+    
+    
+    
 }
 
 /* Pobieranie elem. (n, m)*/
 
-double Matrix::get(int n, int m){
+double Matrix::get(int n, int m)noexcept(false){
     // sprawdzanie czy elem. (n, m) istnieje
     if((n < 0 || n >= row) || (m < 0 || m >= columns)){
-        cout<<"Element ("<<n<<", "<<m<<") nie istnieje dla macierzy "<<row<<"x"<<columns<<endl;
-        exit(1);
+        NoElement noelem;
+        try
+        {
+            throw noelem;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
     }
     return matrix[n][m];
 }
 
 /*ustawianie wart. elem. (n, m) na val*/
 
-void Matrix::set(int n, int m, double val){
+void Matrix::set(int n, int m, double val)noexcept(false){
     if((n < 0 || n >= row) || (m < 0 || m >= columns)){
-        cout<<"Element ("<<n<<", "<<m<<") nie istnieje dla macierzy "<<row<<"x"<<columns<<endl;
-        exit(1);
+           NoElement noelem;
+        try
+        {
+            throw noelem;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
     }
     cout<<"Ustawianie wartosci " <<val<<" dla elementu ("<<n<<", "<<m<<") dla macierzy "<<row<<"x"<<columns<<endl;
     matrix[n][m] = val;
@@ -98,7 +171,7 @@ int Matrix::rows(){
 -odejmowanie
 -mnożenie */
 
-Matrix Matrix::add(Matrix m2){
+Matrix Matrix::add(Matrix &m2)noexcept(false){
     if(row == m2.rows() && columns == m2.cols()){
         Matrix matrix_sum(row, columns);
         for(int i = 0; i < row; i++){
@@ -108,10 +181,20 @@ Matrix Matrix::add(Matrix m2){
         }
         return matrix_sum;
 
-    }else exit(1);    
+    }else{
+     WrongSize wrong;
+        try
+        {
+            throw wrong;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        }   
 }
 
-Matrix Matrix::subtract(Matrix m2){
+Matrix Matrix::subtract(Matrix &m2)noexcept(false){
     if(row == m2.rows() && columns == m2.cols()){
         Matrix matrix_sub(row, columns);
         for(int i = 0; i < row; i++){
@@ -120,10 +203,20 @@ Matrix Matrix::subtract(Matrix m2){
             }
         }
         return matrix_sub;
-    }else exit(1);  
+    }else {
+      WrongSize wrong;
+        try
+        {
+            throw wrong;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        }   
 }
 
-Matrix Matrix::multiply(Matrix m2){
+Matrix Matrix::multiply(Matrix &m2)noexcept(false){
     if(columns == m2.rows()){
         Matrix matrix_mul(row, m2.cols());
         for(int i = 0; i < row; i++){
@@ -137,12 +230,22 @@ Matrix Matrix::multiply(Matrix m2){
         }
         }
         return matrix_mul;
-    }else exit(1);  
+    }else {
+      WrongSize wrong;
+        try
+        {
+            throw wrong;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        }  
 }
 
 /*zapisywanie do pliku*/
 
- void Matrix::store(string filename, string path){
+ void Matrix::store(string filename, string path)noexcept(false){
      ofstream file;
      path += "/" + filename;
      file.open(path);
@@ -155,7 +258,17 @@ Matrix Matrix::multiply(Matrix m2){
              file<<"\n";
          }
          file.close();
-     }else cout<<"Blad. Plik nie zostal otwarty"<<endl;
+     }else {
+        FileNotOpen filenotopen;
+        try
+        {
+            throw filenotopen;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+     }
  }
 
  /*destruktor*/
