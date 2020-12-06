@@ -14,7 +14,7 @@ class Matrix{
         Matrix(int n, int m); // konstruktor dla macierzy niekwadratowej
         Matrix(int n); // kostruktor dla macierzy kwadratowej
         Matrix(string path) noexcept(false) ; // konstruktor dla macierzy z pliku
-        void print(); // metoda do wyśweitlania macierzy
+        void print() noexcept(false); // metoda do wyśweitlania macierzy
         double get(int n, int m) noexcept(false); // metoda pobierająca element (n, m)
         void set(int n, int m, double val) noexcept(false); // metoda do ustawiania wart. elementu (n, m) na val
         int cols(); // metoda zwracająca liczbę kolumn

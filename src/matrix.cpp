@@ -94,7 +94,7 @@ Matrix::Matrix(string path) noexcept(false){
 
 /*drukowanie macierzy na ekran */
 
-void Matrix::print(){
+void Matrix::print()noexcept(false){
     if(!matrix.empty()){
         cout<<"Wyswietlanie macierzy "<<row<<"x"<<columns<<endl;
         for(int i = 0; i < row; i++){
