@@ -38,10 +38,23 @@ class PrintException : public exception
 Matrix::Matrix(int n, int m){
     row = n;
     columns = m;
+    if(columns>0 && row>0){
     cout<<"Tworzenie macierzy "<<row<<"x"<<columns<<endl;
     matrix.resize(row); // tworzymy odpowiedni liczbe wierszy w wektorze
     for(int i = 0; i < row; i++){
         matrix[i].resize(columns, 0); // w każdym wierszu towrzymy odpowiednią lizbe kolumn i każde miejsce wypełniamy zerami
+    }
+    }else {
+        WrongSize wrong_size;
+        try
+        {
+            throw wrong_size;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        
     }
 }
 
@@ -50,10 +63,23 @@ Matrix::Matrix(int n, int m){
 Matrix::Matrix(int n){
     row = n;
     columns = n;
+    if(columns>0){
     cout<<"Tworzenie macierzy "<<row<<"x"<<columns<<endl;
     matrix.resize(row); // tworzymy odpowiedni liczbe wierszy w wektorze
     for(int i = 0; i < row; i++){
         matrix[i].resize(columns, 0); // w każdym wierszu towrzymy odpowiednią lizbe kolumn i każde miejsce wypełniamy zerami
+    }
+    }else{
+        WrongSize wrong_size;
+        try
+        {
+            throw wrong_size;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        
     }
 }
 
